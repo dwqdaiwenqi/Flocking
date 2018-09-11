@@ -1,0 +1,26 @@
+{
+  "name": "flocking",
+  "version": "1.0.0",
+  "email": "2540546236@qq.com",
+  "description": "A 3D model viewer component based on react.js",
+  "main": "dist/scripts/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "site": "webpack --mode development",
+    "dev": "webpack --mode development --w",
+    "pro": "webpack --mode development"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "marked": "^0.5.0",
+    "raw-loader": "^0.5.1",
+    "react-router": "^3.2.1",
+    "react-scroll-up": "^1.3.3",
+    "three": "^0.95.0"
+  },
+  "devDependencies": {
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "less-loader": "^4.1.0"
+  }
+}
