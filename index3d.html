@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>flock</title>
+  <style>
+    *{margin: 0;padding: 0;}
+    html,body{
+      width:100%;height:100%;
+    }
+		#d1{
+			width:100px;
+			height:100px;
+			border:1px solid black;
+			display: none;
+		}
+  </style>
+</head>
+<body>
+	<div id="d1"></div>
+	<div id="wrap1">
+			<!-- sepDist
+			cohDist
+			aliDist -->
+			<!-- separation
+alignment
+cohesion -->
+<!-- 
+static sDist = 18
+static cDist = 80
+static aDist = 60 -->
+		<!-- <p><label for="">separation</label> <input id="ipt_sep" type="range" min="0" max="100" value="40" step="1"></p>
+		<p><label for="">alignment</label> <input id="ipt_coh" type="range" min="0" max="100" value="30" step="1"></p>
+		<p><label for="">cohesion</label> <input id="ipt_ali" type="range" min="0" max="100" value="40" step="1"></p> -->
+		<p><label for="">separation</label> <input id="ipt_sep" type="range" min="0" max="100" value="60" step="1"></p>
+		<p><label for="">alignment</label> <input id="ipt_coh" type="range" min="0" max="100" value="80" step="1"></p>
+		<p><label for="">cohesion</label> <input id="ipt_ali" type="range" min="0" max="100" value="60" step="1"></p>
+		
+	</div>
+	
+	<script src="/common/js/three-95.js"></script>
+  <script src="/common/js/OrbitControls.js"></script>
+
+  <script>
+
+		let scene = new THREE.Scene()
+		let camera = new THREE.PerspectiveCamera(45,innerWidth/innerHeight,.1,10000)
+		let renderer = new THREE.WebGLRenderer()
+		scene.fog = new THREE.FogExp2(0xcccccc, 0.0027);
+		renderer.setClearColor(scene.fog.color)
+		renderer.setSize(innerWidth, innerHeight)
+		document.body.appendChild(renderer.domElement);
+
+		let hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6)
+		hemiLight.color.setHSL(0.6, 1, 0.6)
+		hemiLight.groundColor.setHSL(0.095, 1, 0.75)
+		hemiLight.position.set(0, 50, 0)
+		scene.add(hemiLight)
+		let hemiLightHelper = new THREE.HemisphereLightHelper(hemiLight, 10)
+		scene.add(hemiLightHelper)
+		let dirLight = new THREE.DirectionalLight(0xffffff, 1)
+		dirLight.color.setHSL(0.1, 1, 0.95)
+		dirLight.position.set(-1, 1.75, 1)
+		dirLight.position.multiplyScalar(30)
+		scene.add(dirLight)
+		dirLight.castShadow = true
+		dirLight.shadow.mapSize.width = 2048
+		dirLight.shadow.mapSize.height = 2048
+		let d = 50
+		dirLight.shadow.camera.left = -d
+		dirLight.shadow.camera.right = d
+		dirLight.shadow.camera.top = d
+		dirLight.shadow.camera.bottom = -d
+		dirLight.shadow.camera.far = 3500
+		dirLight.shadow.bias = -0.0001
+
+		
+		camera.position.copy(new THREE.Vector3(0,0,.1))
+		camera.lookAt(new THREE.Vector3(0,0,0))
+
+		let controls = new THREE.OrbitControls(camera, renderer.domElement);
+		controls.update()
+
+		let constrain_spe = new THREE.Mesh(
+			new THREE.SphereGeometry(600,50,50)
+			,new THREE.MeshBasicMaterial({
+				color:new THREE.Color().setRGB(0,0,0), wireframe:true 
+				,side : THREE.DoubleSide
+			})
+		) 
+		scene.add(constrain_spe)
+
+		constrain_spe.position.set(0,0,0)
+		
+		let random = Math.random;
+
+
+	ipt_sep.addEventListener('change',e=>{
+		boids.forEach((boid)=>{
+			boid.sepDist = e.target.value*1
+		})
+	})
+	ipt_coh.addEventListener('change',e=>{
+
+		boids.forEach((boid)=>{
+			boid.cohDist = e.target.value*1
+		})
+	})
+	ipt_ali.addEventListener('change',e=>{
+
+		boids.forEach((boid)=>{
+			boid.aliDist = e.target.value*1
+		})
+	})
+
+		class Boid extends THREE.Group{
+			constructor(geo=new THREE.ConeGeometry( 3, 10, 3 )){
+				super()
+
+				this.max_speed = 5/1.2
+				this.max_force = .1
+				
+				// this.sepDist = 20;
+				// this.cohDist = 25;
+				// this.aliDist = 50;
+				
+				//18,80,60
+				this.sepDist = 50;
+				this.cohDist = 100;
+				this.aliDist = 70;
+				
+
+				this.ac = new THREE.Vector3()
+				this.ve = new THREE.Vector3()
+				this.rot = new THREE.Euler()
+				// this.vfrom = new THREE.Vector3(0, 0, -1);
+				this.vfrom = new THREE.Vector3(0, 1, 0);
+				
+				// var geometry = new THREE.ConeGeometry( 5, 20, 32 );
+				// ConeGeometry(radius, height, radiusSegments, heightSegments, openEnded, thetaStart, thetaLength)
+				this.el = new THREE.Mesh(
+					geo
+					,new THREE.MeshLambertMaterial({
+						color:new THREE.Color().setHSL(Math.random() * 0.7, 0.75, 0.75)
+					})
+				)
+				this.add(this.el)
+				
+				this.sharkFlag = false
+
+			}
+			seek(target){
+
+				var desired_v = target.clone().sub(this.position).normalize()
+				desired_v.multiplyScalar(this.sharkFlag? this.max_speed*3:this.max_speed)
+				this.ac.add(desired_v.sub(this.ve).multiplyScalar(1))
+			}
+			flee(target){
+
+				var desired_v = target.clone().sub(this.position).normalize()
+				desired_v.multiplyScalar(this.sharkFlag? this.max_speed*3:this.max_speed)
+
+				this.ac.sub(
+					desired_v.sub(this.ve).multiplyScalar(1)
+				)
+
+				
+			}
+			update(boids, shark){
+				//console.log(this.ve.length())
+				
+				// separation
+				// alignment
+				// cohesion
+			
+				
+				 {
+
+					for(let i = 0; i < boids.length; i++){
+
+						let dist = this.position.distanceTo(boids[i].position)
+						// debugger
+						if(dist > 0.001 && dist < this.sepDist*.5 && boids[i]!=this) {
+							this.flee(boids[i].position)
+						}
+					}
+
+
+					 	// var count = 0;
+						// var sum = new THREE.Vector3(0, 0, 0);
+						
+						// for(var i = 0; i != boids.length; i++) {
+						// 		var dist = this.position.distanceTo(boids[i].position);
+						// 		if(dist > 0.001 && dist < this.sepDist) {
+						// 				var diff = this.position.clone()
+						// 				diff.sub(boids[i].position);
+						// 				diff.normalize();
+						// 				diff.divideScalar(dist);
+						// 				sum.add(diff);
+						// 				count++;
+						// 		}
+						// }
+						
+						// if(count > 0) {
+						// 		sum.divideScalar(count);
+						// }
+						
+						// if(sum.x == 0 && sum.y == 0 && sum.z) {
+						// 		return diff;
+						// }
+						
+						// if(sum.length() > 0) {
+						// 		sum.normalize();
+						// 		sum.multiplyScalar(this.max_speed);
+						// 		sum.sub(this.ve);
+
+						// 		if(sum.length()>this.max_force) sum.normalize().multiplyScalar(this.max_force)
+
+						// }
+
+						// this.ac.add(sum)
+
+				}
+
+
+				{
+					//alignment
+					let count = 0;
+					let sum = new THREE.Vector3()
+					
+					for(let i = 0; i < boids.length; i++){
+						let dist = this.position.distanceTo(  boids[i].position)
+						if(dist > 0.001 && dist < this.aliDist && boids[i]!=this) {
+							sum.add(boids[i].ve)
+							++count
+						}
+					}
+					
+					let force
+					if(count > 0) {
+						sum.divideScalar(count).normalize()
+						sum.multiplyScalar(this.max_speed)
+						sum.sub(this.ve)
+						force = sum
+					} else {
+						force = new THREE.Vector3()
+					}
+
+					this.ac.add(force)
+					
+				}
+				
+				{
+					//cohesion 
+					let count = 0;
+					let sum = new THREE.Vector3(0);
+					
+					for(let i = 0; i < boids.length; i++){
+						let dist = this.position.distanceTo(boids[i].position)
+						
+						let d = this.sharkFlag?30:10
+						if(dist > 0.001 && dist < d && boids[i]!=this) {
+
+							sum.add(boids[i].position);
+							++count
+						}
+							
+					}
+
+					if(count > 0) {
+						sum.divideScalar(count);
+
+						this.seek(sum)
+					}
+					
+					
+				// console.log(count)
+				}
+				
+				if(this.ac.length()>this.max_force){
+					this.ac = this.ac.normalize().multiplyScalar(this.sharkFlag?this.max_force*3:this.max_force)
+				}
+				if(this.ve.length()>this.max_speed){
+					this.ve = this.ve.normalize().multiplyScalar(this.sharkFlag?this.max_speed*3:this.max_speed)
+				}
+
+				this.ve.add(this.ac)
+				this.position.add(this.ve)
+				//}
+				
+				this.seek(this.target)
+
+				var quat = new THREE.Quaternion();
+	
+				quat.setFromUnitVectors(this.vfrom, new THREE.Vector3(this.ve.x, this.ve.y, this.ve.z).normalize());
+
+				this.rot.setFromQuaternion(quat);
+
+				this.rotation.x = this.rot.x
+				this.rotation.y = this.rot.y
+				this.rotation.z = this.rot.z
+			}
+		}
+		
+		var target = new THREE.Vector3(0,0,-300)
+
+		let boids = [...Array(100)].map(()=>{
+			let boid = new Boid()
+			let l = 1
+			boid.ac = new THREE.Vector3()
+			boid.ve = new THREE.Vector3(l-random()*l*2,l-random()*l*2,l-random()*l*2)
+			boid.position.copy(new THREE.Vector3(100-random()*200,0,-100))
+
+			boid.target = target.clone()
+			
+			
+			scene.add(boid)
+			return boid
+		})
+
+
+		requestAnimationFrame(function animate(){
+			requestAnimationFrame(animate)
+			renderer.render(scene,camera)
+			
+			var t = Date.now()*.002;
+			//var target = new THREE.Vector3(Math.sin(t*.3)*40, Math.cos(t*.5)*60, -300);
+
+			boids.forEach((boid)=>{
+				//console.log(boid)
+				
+				//boid.target = target
+
+				boid.update(boids,shark)
+        
+				
+			})
+		})
+
+		
+	
+	// ////////////////////////////////
+		
+  </script>
+</body>
+</html>

@@ -8,7 +8,7 @@ export default class Bird extends cax.Group{
   static cDist = 80
   static aDist = 60
 
-  constructor(mass){
+  constructor(mass=1){
     super()
     this.polygon = new cax.Graphics()
     this.polygon

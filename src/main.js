@@ -2,8 +2,8 @@ import cax from 'cax'
 import './main.less'
 import Flocking from './flocking'
 
-var {offsetWidth,offsetHeight} = document.body
-var stage = new cax.Stage(offsetWidth,offsetHeight,'body')
+
+var stage = new cax.Stage(document.body.offsetWidth,document.body.offsetHeight,'body')
 
 var flocking = Flocking(stage)
 
