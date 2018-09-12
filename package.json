@@ -6,7 +6,7 @@
   "main": "dist/scripts/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "site": "webpack --mode development",
+    "site": "webpack --mode development --w",
     "dev": "webpack --mode development --w",
     "pro": "webpack --mode development"
   },

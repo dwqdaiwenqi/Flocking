@@ -7,14 +7,14 @@ const ENV = process.env.npm_lifecycle_event;
 module.exports = {
     entry: ENV==='site' ? './site/src/main.js' : './src/main.js',
 
-    // output: ENV==='site' ? 
-    //     { path: __dirname+'/site/dist/',filename:'scripts/[name].js' } :
-    //     { path: __dirname+'/dist/',filename: 'scripts/[name].js',library: 'React3DViewer',libraryTarget: 'umd' },
     output: ENV==='site' ? 
-    { path: __dirname+'/site/dist/',filename:'scripts/[name].js' } :
-    { path: __dirname+'/dist/',filename: 'scripts/[name].js'},
+        { path: __dirname+'/site/dist/',filename:'scripts/[name].js' } :
+        { path: __dirname+'/dist/',filename: 'scripts/[name].js',library: 'React3DViewer',libraryTarget: 'umd' },
+    // output: ENV==='site' ? 
+    // { path: __dirname+'/site/dist/',filename:'scripts/[name].js' } :
+    // { path: __dirname+'/dist/',filename: 'scripts/[name].js'},
 
-    devtool: ENV==='pro'?'source-map':'eval-source-map',
+    //devtool: ENV==='pro'?'source-map':'eval-source-map',
     module: {
         rules: [
             {    

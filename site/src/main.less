@@ -1,0 +1,52 @@
+*{margin:0;padding:0;}
+html,body{width:100%;height:100%;}
+body{
+  max-width:750px;
+  margin:0 auto;
+}
+#app,#app>section,.container,.flocking-2d,.flocking-3d,.stage-2d,.stage-3d{
+  width:100%;height:100%;
+}
+#app>section{
+  position: relative;
+}
+
+.stage-2d,.stage-3d{
+  display: none;
+  position: relative;
+}
+.link-list{
+  position: absolute;left:0;top:0;
+  >a{
+    margin:1.5%;
+  }
+  z-index: 2;
+
+}
+.stage-3d{
+  >div{
+    position: absolute;left:0;top:0;
+    width:100%;
+    display: -webkit-box;
+    -webkit-box-pack: end;
+    -webkit-box-align: center;
+    // float: right;
+    >p{
+      display: -webkit-box;
+      // box-sizing: border-box;
+      -webkit-box-pack: end;
+      -webkit-box-align: center;
+      // padding:3%;
+      margin:3%;
+      input{
+        display: block;
+
+      }
+      span{
+        display: block;
+      }
+
+    }
+    
+  }
+}
