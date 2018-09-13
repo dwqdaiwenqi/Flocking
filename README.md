@@ -1,4 +1,4 @@
-# javascript模拟鸟群使用cax和threejs渲染引擎
+## javascript模拟鸟群使用cax和threejs渲染引擎
 
 本文会使用前端技术来模拟2d和3d鸟群，我选用canvas元素绘制，当然也可以使用css3或者svg。
 
