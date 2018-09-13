@@ -2,7 +2,7 @@
   "name": "flocking",
   "version": "1.0.0",
   "email": "2540546236@qq.com",
-  "description": "A 3D model viewer component based on react.js",
+  "description": "flocking...",
   "main": "dist/scripts/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

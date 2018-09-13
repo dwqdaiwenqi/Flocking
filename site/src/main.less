@@ -11,15 +11,47 @@ body{
   position: relative;
 }
 
+button{
+  display: block;
+  border:none;
+  background: none;
+  outline: none;
+  
+
+}
+
 .stage-2d,.stage-3d{
   display: none;
   position: relative;
 }
+
 .link-list{
   position: absolute;left:0;top:0;
   >a{
-    margin:1.5%;
+    margin:10px;
+    display: block;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    >button{
+      @w:40px;
+      width:@w;
+      height:@w;
+      border-radius:@w;
+      color:black;
+      background:white;
+      
+
+    }
   }
+
+  .active-link{
+    >button{
+      background:#0ec5c5;
+      color:white;
+    }
+  }
+
+
   z-index: 2;
 
 }
@@ -28,7 +60,7 @@ body{
     position: absolute;left:0;top:0;
     width:100%;
     display: -webkit-box;
-    -webkit-box-pack: end;
+    margin-top:105px;
     -webkit-box-align: center;
     // float: right;
     >p{
@@ -38,12 +70,14 @@ body{
       -webkit-box-align: center;
       // padding:3%;
       margin:3%;
+      
       input{
         display: block;
 
       }
       span{
         display: block;
+        margin:0 0 0 7px;
       }
 
     }

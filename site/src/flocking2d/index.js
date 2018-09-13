@@ -15,7 +15,14 @@ export default {
     var stage = new cax.Stage($stage.offsetWidth,$stage.offsetHeight,$stage)
     var rd = Math.random
 
-    var birds = Array.from({length:70},(v,i)=>{
+    stage.add(
+      new cax.Rect(stage.width,stage.height,{fillStyle:'#cccccc'})
+    )
+    stage.on('touchmove',e=>{
+      e.preventDefault()
+    })
+
+    var birds = Array.from({length:60},(v,i)=>{
       var bird = new Bird()
       stage.add(bird)
       

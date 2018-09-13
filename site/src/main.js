@@ -53,6 +53,10 @@ var APP = class App extends Component{
 
     return(
       <section>
+        <a href="//github.com/dwqdaiwenqi/flocking" target="_blank" style={{position:'fixed',right:0,top:0,zIndex:3}} >
+          <img src="//alloyteam.github.io/github.png" alt=""/>
+        </a>
+
         <div className="link-list">
           <Link activeClassName="active-link" to="/2d"><button>2d</button></Link>
           <Link activeClassName="active-link" to="/3d"><button>3d</button></Link>  

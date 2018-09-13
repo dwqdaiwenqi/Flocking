@@ -76,7 +76,7 @@ export default {
 
 
 
-    let boids = [...Array(100)].map(()=>{
+    let boids = [...Array(88)].map(()=>{
       let boid = new Bird()
       let l = 1
       boid.ac = new THREE.Vector3()
@@ -90,7 +90,7 @@ export default {
     })
 
     var p = 2,q = 5;
-    
+
     var that = this;
 
     requestAnimationFrame(function animate(){
