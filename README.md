@@ -1,9 +1,12 @@
 ## javascript模拟鸟群使用cax和threejs渲染引擎
-cax是一款我非常喜欢的渲染引擎，支持小程序、小游戏以及 Web 浏览器渲染。用它既能开发小游戏也能开发图表（见wechart），拥有简洁轻巧的AP，它抹平了各环境的API使用差异，减少了学习和代码移植成本，做到了一套代码通吃各端！Learn Once, Write Anywhere & Write Once, Run Anywhere ！
 
-本文会使用前端技术来模拟鸟群，我选用canvas绘制，当然也可以使用css3或者svg。canvas渲染引擎的选择就不说了，你已经知道了，好了我们开始吧~
+本文会使用前端技术来模拟鸟群，我选用canvas绘制，当然也可以使用css3或者svg。
 
-鸟群（flocking）是啥？ 如下图 ↓
+2d的渲染引擎我选择cax，cax是一款我非常喜欢的渲染引擎，支持小程序、小游戏以及 Web 浏览器渲染。用它既能开发小游戏也能开发图表（见wechart），拥有简洁轻巧的AP，它抹平了各环境的API使用差异，减少了学习和代码移植成本，做到了一套代码通吃各端！Learn Once, Write Anywhere & Write Once, Run Anywhere ！
+
+3d的渲染我选用threejs，这个库我就不介绍了~
+
+我们先介绍2d的鸟群（flocking） 如下图 ↓
 
 这些鸟并不是在漫无目的的乱飞，它们看上去都拥有了智商，形成了群体，产生了复杂的群组运动效果
 
@@ -20,6 +23,60 @@ cax是一款我非常喜欢的渲染引擎，支持小程序、小游戏以及 W
 它们飞行的方向也不能太乱，大体上都会往一个方向上飞，每个对象都会归到一队伍中
 
 这三个特性分离、内聚、排队组合起来，会得到飞车逼真的鸟群（群体）
+
+```js
+ birds = birds.filter(o=>this!=o)
+
+    // separation
+    for(let bird of birds){
+      if(this.po.distanceTo(bird.po) < Bird.sDist){
+
+        this.ac.sub(
+          bird.po.clone()
+          .sub(this.po).normalize()
+          .multiplyScalar(Bird.MAX_SPEED)
+          .sub(this.ve)
+        )
+      } 
+    }
+      
+    // cohesion
+    let cohesion =  birds.reduce((param, b)=>{
+      if(this.po.distanceTo(b.po) < Bird.cDist){
+        param.sum.add(b.po)
+        param.count++
+      }
+      return param
+    },{sum:new Vector(),count:0,force:new Vector()})
+
+    if(cohesion.count>0){
+
+      this.ac.add(
+        cohesion.sum.divideScalar(cohesion.count)
+        .sub(this.po).normalize()
+        .multiplyScalar(Bird.MAX_SPEED)
+        .sub(this.ve)
+      )
+    }
+
+
+    // alignment
+    let alignment =  birds.reduce((param, b)=>{
+      if(this.po.distanceTo(b.po) < Bird.aDist){
+        param.sum.add(b.ve)
+        param.count++
+      }
+      return param
+    },{sum:new Vector(),count:0,force:new Vector()})
+
+    if(alignment.count>0){
+      this.ac.add(
+        alignment.sum.divideScalar(alignment.count).normalize()
+        .multiplyScalar(Bird.MAX_SPEED).sub(this.ve) 
+      )
+    }
+```
+
 
 
 
