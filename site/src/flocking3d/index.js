@@ -85,7 +85,6 @@ export default {
 
       boid.target = target.clone()
       
-      
       scene.add(boid)
       return boid
     })
@@ -103,7 +102,7 @@ export default {
       renderer.render(scene,that.camera)
 
       var t = Date.now()*.0001;
-      
+
       var target = new THREE.Vector3(
         (2 + Math.cos(q * t)) * Math.cos(p * t)
         ,(2 + Math.cos(q * t)) * Math.sin(p * t)

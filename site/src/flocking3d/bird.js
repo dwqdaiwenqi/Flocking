@@ -31,19 +31,18 @@ export default class Bird extends THREE.Group{
 
   }
   update(boids){
-    //console.log(this.ve.length())
-    
+
     // separation
     // alignment
     // cohesion
 
-      {
+    {
 
       for(let i = 0; i < boids.length; i++){
 
         let dist = this.position.distanceTo(boids[i].position)
         // debugger
-        if(dist > 0.001 && dist < Bird.sepDist*.5 && boids[i]!=this) {
+        if(dist > .0001 && dist < Bird.sepDist*.5 && boids[i]!=this) {
   
           this.ac.sub(
             boids[i].position.clone().sub(this.position).normalize()
@@ -52,9 +51,8 @@ export default class Bird extends THREE.Group{
           )
 
         }
+
       }
-
-
     }
 
 
@@ -65,25 +63,18 @@ export default class Bird extends THREE.Group{
       
       for(let i = 0; i < boids.length; i++){
         let dist = this.position.distanceTo(  boids[i].position)
-        if(dist > 0.001 && dist < Bird.aliDist && boids[i]!=this) {
+        if(dist > .0001 && dist < Bird.aliDist && boids[i]!=this) {
           sum.add(boids[i].ve)
           ++count
         }
       }
-      
-      let force
+
       if(count > 0) {
         sum.divideScalar(count).normalize()
         sum.multiplyScalar(Bird.MAX_SPEED)
-        
-        sum.sub(this.ve)
-        force = sum
-      } else {
-        force = new THREE.Vector3()
-      }
+        this.ac.add(sum.sub(this.ve))
+      } 
 
-      this.ac.add(force)
-      
     }
     
     {
@@ -95,7 +86,7 @@ export default class Bird extends THREE.Group{
         let dist = this.position.distanceTo(boids[i].position)
         
         let d = this.sharkFlag?Bird.coDist*1:Bird.coDist*2
-        if(dist > 0.001 && dist < d && boids[i]!=this) {
+        if(dist > .0001 && dist < d && boids[i]!=this) {
         
           sum.add(boids[i].position);
           ++count
@@ -114,18 +105,11 @@ export default class Bird extends THREE.Group{
         )
       }
       
+    }
 
-    }
-    
-    if(this.ac.length()>Bird.MAX_FORCE){
-      // clampLength
-      this.ac = this.ac.normalize().multiplyScalar(Bird.MAX_FORCE)
-    }
-    if(this.ve.length()>Bird.MAX_SPEED){
-      this.ve = this.ve.normalize().multiplyScalar(Bird.MAX_SPEED)
-    }
-    
-
+    this.ac.clampLength(.01,Bird.MAX_FORCE)
+    this.ve.clampLength(.01,Bird.MAX_SPEED)
+   
     this.ve.add(this.ac)
     this.position.add(this.ve)
 
@@ -138,7 +122,7 @@ export default class Bird extends THREE.Group{
 
     this.rot.setFromQuaternion(
       new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(this.ve.x, this.ve.y, this.ve.z).normalize())
-    );
+    )
 
     this.rotation.x = this.rot.x
     this.rotation.y = this.rot.y
