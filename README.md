@@ -1,12 +1,12 @@
 ## javascript模拟鸟群使用cax和threejs渲染引擎
 
-本文会使用前端技术来模拟鸟群，我选用canvas绘制，当然也可以使用css3或者svg。
+本文会使用前端技术来模拟2d和3d鸟群，我选用canvas绘制，当然也可以使用css3或者svg。
 
 最终实现点 [这儿](https://dwqdaiwenqi.github.io/flocking-tutorial/site)
 
-2d的渲染引擎我选择cax，cax是一款我非常喜欢的渲染引擎，支持小程序、小游戏以及 Web 浏览器渲染。用它既能开发小游戏也能开发图表（见wechart），拥有简洁轻巧的AP，它抹平了各环境的API使用差异，减少了学习和代码移植成本，做到了一套代码通吃各端！Learn Once, Write Anywhere & Write Once, Run Anywhere ！
+2d的渲染引擎我选择cax，cax是一款我非常喜欢的渲染引擎，支持小程序、小游戏以及 Web 浏览器渲染。用它既能开发小游戏也能开发图表（见wechart），强力推荐！
 
-3d的渲染我选用threejs，这个库我就不介绍了~
+3d的渲染我选用threejs~
 
 我们先介绍2d的鸟群（flocking） 如下图 ↓
 
@@ -56,7 +56,7 @@ update(birds){
  },{sum:new Vector(),count:0,force:new Vector()})
 
  if(cohesion.count>0){
-   // 先求得平均位置，用平均位置求得期望的目标速度，最后把算出的转向力累积到加速度上
+   // 先求得平均位置，用平均位置求得期望的目标速度，把算出的转向力累积到加速度上
    this.ac.add(
      cohesion.sum.divideScalar(cohesion.count)
      .sub(this.po).normalize()
@@ -76,7 +76,7 @@ update(birds){
  },{sum:new Vector(),count:0,force:new Vector()})
 
  if(alignment.count>0){
-  // 先求得平均速度，用平均速度求得期望的目标速度，最后把算出的转向力累积到加速度上
+  // 先求得平均速度，用平均速度求得期望的目标速度，把算出的转向力累积到加速度上
    this.ac.add(
      alignment.sum.divideScalar(alignment.count).normalize()
      .multiplyScalar(Bird.MAX_SPEED)
@@ -94,7 +94,7 @@ update(birds){
 }
  
 ```
-概括就是先忽略到自己，然后在阈值范围内匹配到了其他鸟，则把计算出的转向力累加到加速度上
+就是先忽略到自己，如果搜寻了那些过于接近的鸟，则把计算出的转向力累加到加速度上。注意的是，过于接近的判断其实还有个附加条件。就是在视场内，上面的代码并没有加上这个条件，不过也能模拟的较好，我就没写=w=，鸟的视场通常是180的，180度满足的是 ```js this.ve.dot(this.po.sub(bird.po)) < 0 ```
 
 
 // ........
