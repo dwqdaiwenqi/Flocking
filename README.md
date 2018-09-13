@@ -26,8 +26,28 @@
 
 这三个特性分离、内聚、排队组合起来，就会得到飞车逼真的鸟群（群体）
 
-考虑到鸟群的复杂行为，我们不必知道鸟群的整体智慧。每只鸟只需要对它范围内的其他鸟运用那三个特性，自然而然形成群落行为。来看下面的代码，代码没做太多优化，将就着看：
+考虑到鸟群的复杂行为，我们不必知道鸟群的整体智慧。每只鸟只需要对它范围内的其他鸟运用那三个特性，自然而然的形成群落。来看下面的代码，代码没做太多优化，将就着看：
 
+创建鸟们，添加到场景中
+```js
+var birds = Array.from({length:60},(v,i)=>{
+  var bird = new Bird()
+  stage.add(bird)
+
+  Object.assign(bird,{
+    po: new Vector(stage.width*rd(),stage.height*rd())
+    ,ve: new Vector(rd() * 20 - 10, rd() * 20 - 10)
+    ,ac: new Vector()
+  }) 
+  return bird
+})
+
+this.tick = cax.tick(()=>{
+  stage.update()
+  birds.forEach(b=>b.update(stage,birds))
+})
+```
+关键update方法
 ```js
 update(birds){
  //先忽略到自己
@@ -90,12 +110,14 @@ update(birds){
  
  // 让质量大的鸟慢下来
  this.ve.add(this.ac.divideScalar(this.mass))
- this.po.add(this.ve)
+ this.po.add(this.ve) 
+ 
+ // ...
   
 }
  
 ```
-就是先忽略到自己，如果搜寻了那些过于接近的鸟，则把计算出的转向力累加到加速度上。注意的是，对于过于接近的判断其实还有个附加条件，就是在视场内，上面的代码并没有加上这个条件，不过也能模拟的较好，我就没写=w=，鸟的视场通常是180度的，是否在180度内，满足的是 ` this.ve.dot(this.po.sub(bird.po)) < 0 `
+就是先忽略到自己，如果搜寻了那些过于接近的鸟，则把计算出的转向力累加到加速度上。注意的是，对于过于接近的判断其实还有个附加条件，就是在视场内。上面的代码并没有加上这个条件，不过也能模拟的较好，我就没写=w=，鸟的视场通常是180度的，是否在180度内，满足的是 ` this.ve.dot(this.po.sub(bird.po)) < 0 `
 
 
 // ........
