@@ -123,7 +123,9 @@ update(birds){
 我们还可以叠加多层的信息生成更复杂的模拟。这里的鸟都是一类鸟，可以添加一个老鹰对象，如果小鸟和老鹰的距离超过了一定阈值小鸟就会立马逃跑。要模拟这种情况，只要再添加一种逃离的行为到整个系统中，这种行为还会导致小鸟的总转向力，速度全部上升。
 
 ### 3d鸟群
-3d的实现和2d其实原理类似，唯一要注意的地方就是对象的转向问题，会使用四元数来进行处理。
+3d的实现和2d其实原理类似，唯一要注意的地方就是对象的转向问题，会使用四元数来进行处理，关键就是` this.rot.setFromQuaternion(
+      new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(this.ve.x, this.ve.y, this.ve.z).normalize())
+    )`
 
 3d demo
 
