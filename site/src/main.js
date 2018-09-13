@@ -66,7 +66,6 @@ var APP = class App extends Component{
               </p>
             </div>
           </div>
-          {/* {this.props.children} */}
         </div>
       </section>
     )
