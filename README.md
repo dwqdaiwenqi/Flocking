@@ -1,15 +1,15 @@
-## javascript模拟鸟群使用cax和threejs渲染引擎
+# javascript模拟鸟群使用cax和threejs渲染引擎
 
 本文会使用前端技术来模拟2d和3d鸟群，我选用canvas元素绘制，当然也可以使用css3或者svg。
 
-最终实现点 [这儿](https://dwqdaiwenqi.github.io/flocking-tutorial/site)
+整个实现 [这儿](https://dwqdaiwenqi.github.io/flocking-tutorial/site)
 
 2d的渲染引擎我选择cax，cax是一款我非常喜欢的渲染引擎，支持小程序、小游戏以及 Web 浏览器渲染。用它既能开发小游戏也能开发图表（见wechart），强力推荐！
 
 3d的渲染我选用threejs ~
 
 ### 2d鸟群（flocking） 如下图 ↓
-2d demo
+[2d demo](https://dwqdaiwenqi.github.io/flocking-tutorial/site#/2d)
 
 这些鸟并不是在漫无目的的乱飞，它们看上去都拥有了智商，形成了群体，产生了复杂的群组运动效果
 
@@ -126,7 +126,11 @@ update(birds){
 3d的实现和2d其实原理类似，唯一要注意的地方就是对象需要往目标方向的转向问题，这通常会使用四元数来进行处理，代码关键就是：
 ` this.rot.setFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(this.ve.x, this.ve.y, this.ve.z).normalize()))`
 
-3d demo
+[3d demo](https://dwqdaiwenqi.github.io/flocking-tutorial/site#/3d)
+
+
+## 参考
+* http://www.red3d.com/cwr/boids/
 
 
 
