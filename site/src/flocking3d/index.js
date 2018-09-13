@@ -90,7 +90,7 @@ export default {
     })
 
     var p = 2,q = 5;
-
+    
     var that = this;
 
     requestAnimationFrame(function animate(){
