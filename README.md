@@ -30,7 +30,7 @@
     // separation
     for(let bird of birds){
       if(this.po.distanceTo(bird.po) < Bird.sDist){
-
+        // 把算出的转向力减到加速度上
         this.ac.sub(
           bird.po.clone()
           .sub(this.po).normalize()
@@ -50,7 +50,7 @@
     },{sum:new Vector(),count:0,force:new Vector()})
 
     if(cohesion.count>0){
-
+      // 先求得平均位置，用平均位置求得期望的目标速度，最后把算出的转向力累积到加速度上
       this.ac.add(
         cohesion.sum.divideScalar(cohesion.count)
         .sub(this.po).normalize()
@@ -70,9 +70,11 @@
     },{sum:new Vector(),count:0,force:new Vector()})
 
     if(alignment.count>0){
+     // 先求得平均速度，用平均速度求得期望的目标速度，最后把算出的转向力累积到加速度上
       this.ac.add(
         alignment.sum.divideScalar(alignment.count).normalize()
-        .multiplyScalar(Bird.MAX_SPEED).sub(this.ve) 
+        .multiplyScalar(Bird.MAX_SPEED)
+        .sub(this.ve) 
       )
     }
 ```
