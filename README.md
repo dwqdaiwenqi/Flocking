@@ -24,62 +24,78 @@
 排队（alignment）
 它们飞行的方向也不能太乱，大体上都会往一个方向上飞，每个对象都会归到一队伍中
 
-这三个特性分离、内聚、排队组合起来，会得到飞车逼真的鸟群（群体）
+这三个特性分离、内聚、排队组合起来，就会得到飞车逼真的鸟群（群体）
+
+考虑到鸟群的复杂行为，我们不必知道鸟群的整体智慧。每只鸟只需要对它范围内的其他鸟运用那三个特性，自然而然形成群落行为。来看下面的代码，代码没做太多优化，将就着看：
 
 ```js
+update(birds){
+ //先忽略到自己
  birds = birds.filter(o=>this!=o)
+ 
+ // separation
+ for(let bird of birds){
+   if(this.po.distanceTo(bird.po) < Bird.sDist){
+     // 减去这个转向力，实现分离
+     this.ac.sub(
+       bird.po.clone()
+       .sub(this.po).normalize()
+       .multiplyScalar(Bird.MAX_SPEED)
+       .sub(this.ve)
+     )
+   } 
+ }
 
-    // separation
-    for(let bird of birds){
-      if(this.po.distanceTo(bird.po) < Bird.sDist){
-        // 把算出的转向力减到加速度上
-        this.ac.sub(
-          bird.po.clone()
-          .sub(this.po).normalize()
-          .multiplyScalar(Bird.MAX_SPEED)
-          .sub(this.ve)
-        )
-      } 
-    }
-      
-    // cohesion
-    let cohesion =  birds.reduce((param, b)=>{
-      if(this.po.distanceTo(b.po) < Bird.cDist){
-        param.sum.add(b.po)
-        param.count++
-      }
-      return param
-    },{sum:new Vector(),count:0,force:new Vector()})
+ // cohesion
+ let cohesion =  birds.reduce((param, b)=>{
+   if(this.po.distanceTo(b.po) < Bird.cDist){
+     param.sum.add(b.po)
+     param.count++
+   }
+   return param
+ },{sum:new Vector(),count:0,force:new Vector()})
 
-    if(cohesion.count>0){
-      // 先求得平均位置，用平均位置求得期望的目标速度，最后把算出的转向力累积到加速度上
-      this.ac.add(
-        cohesion.sum.divideScalar(cohesion.count)
-        .sub(this.po).normalize()
-        .multiplyScalar(Bird.MAX_SPEED)
-        .sub(this.ve)
-      )
-    }
+ if(cohesion.count>0){
+   // 先求得平均位置，用平均位置求得期望的目标速度，最后把算出的转向力累积到加速度上
+   this.ac.add(
+     cohesion.sum.divideScalar(cohesion.count)
+     .sub(this.po).normalize()
+     .multiplyScalar(Bird.MAX_SPEED)
+     .sub(this.ve)
+   )
+ }
 
 
-    // alignment
-    let alignment =  birds.reduce((param, b)=>{
-      if(this.po.distanceTo(b.po) < Bird.aDist){
-        param.sum.add(b.ve)
-        param.count++
-      }
-      return param
-    },{sum:new Vector(),count:0,force:new Vector()})
+ // alignment
+ let alignment =  birds.reduce((param, b)=>{
+   if(this.po.distanceTo(b.po) < Bird.aDist){
+     param.sum.add(b.ve)
+     param.count++
+   }
+   return param
+ },{sum:new Vector(),count:0,force:new Vector()})
 
-    if(alignment.count>0){
-     // 先求得平均速度，用平均速度求得期望的目标速度，最后把算出的转向力累积到加速度上
-      this.ac.add(
-        alignment.sum.divideScalar(alignment.count).normalize()
-        .multiplyScalar(Bird.MAX_SPEED)
-        .sub(this.ve) 
-      )
-    }
+ if(alignment.count>0){
+  // 先求得平均速度，用平均速度求得期望的目标速度，最后把算出的转向力累积到加速度上
+   this.ac.add(
+     alignment.sum.divideScalar(alignment.count).normalize()
+     .multiplyScalar(Bird.MAX_SPEED)
+     .sub(this.ve) 
+   )
+ }
+ // 不超过最大转向力和速度
+ if(this.ac.length > Bird.MAX_FORCE) this.ac.normalize().multiplyScalar(Bird.MAX_FORCE)
+ if(this.ve.length > Bird.MAX_SPEED) this.ve.normalize().multiplyScalar(Bird.MAX_SPEED)
+ 
+ // 让质量大的鸟慢下来
+ this.ve.add(this.ac.divideScalar(this.mass))
+ this.po.add(this.ve)
+  
+}
+ 
 ```
+概括就是先忽略到自己，然后在阈值范围内匹配到了其他鸟，则把计算出的转向力累加到加速度上
+
 
 // ........
 
