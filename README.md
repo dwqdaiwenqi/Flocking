@@ -2,6 +2,8 @@
 
 本文会使用前端技术来模拟鸟群，我选用canvas绘制，当然也可以使用css3或者svg。
 
+最终实现点 [这儿](https://dwqdaiwenqi.github.io/flocking-tutorial/site)
+
 2d的渲染引擎我选择cax，cax是一款我非常喜欢的渲染引擎，支持小程序、小游戏以及 Web 浏览器渲染。用它既能开发小游戏也能开发图表（见wechart），拥有简洁轻巧的AP，它抹平了各环境的API使用差异，减少了学习和代码移植成本，做到了一套代码通吃各端！Learn Once, Write Anywhere & Write Once, Run Anywhere ！
 
 3d的渲染我选用threejs，这个库我就不介绍了~
