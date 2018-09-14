@@ -10,6 +10,7 @@
 
 ### 2d鸟群  
 [2d demo](https://dwqdaiwenqi.github.io/flocking-tutorial/site#/2d)
+
 <img src="./flocking2d.gif"/>
 
 这些鸟并不是在漫无目的的乱飞，它们看上去都拥有了智商，形成了群体，产生了复杂的群组运动效果
