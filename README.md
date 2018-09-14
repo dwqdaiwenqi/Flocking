@@ -142,10 +142,6 @@ update(birds){
  this.rotation.copy(new THREE.Euler(this.rot.x,this.rot.y,this.rot.z))
 ```
 
-
-
-
-
 ## 参考
 * http://www.red3d.com/cwr/boids/
 
