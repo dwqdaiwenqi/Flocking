@@ -4,9 +4,9 @@
 
 整个实现 [这儿](https://dwqdaiwenqi.github.io/flocking-tutorial/site)
 
-2d的渲染引擎我选择cax，cax是一款我非常喜欢的渲染引擎，支持小程序、小游戏以及 Web 浏览器渲染。用它既能开发小游戏也能开发图表（见[wechart](https://github.com/dntzhang/wechart)），强力推荐！
+3d的渲染我选用threejs 
 
-3d的渲染我选用threejs ~
+2d的渲染引擎我选择cax，cax是一款我非常喜欢的渲染引擎，支持小程序、小游戏以及 Web 浏览器渲染。用它既能开发小游戏也能开发图表（见[wechart](https://github.com/dntzhang/wechart)），强力推荐！
 
 ### 2d鸟群  
 [2d demo](https://dwqdaiwenqi.github.io/flocking-tutorial/site#/2d)
@@ -16,13 +16,16 @@
 这看上去复杂的行为是一种复合行为，通常会拆分为下面几种
 
 #### 分离（separation）
+<img src="./separation.jpg" style="margin:0 auto;">
 首先对象们要尽量不能与周围的对象相互碰撞，它们彼此不能离的太近，需要给自己留出一个小空间
 
 
 #### 内聚（cohesion）
+<img src="./cohesion.jpg" style="margin:0 auto;">
 也不能和周围对象们离的太远了，太远会被拉回来
 
 #### 排队（alignment）
+<img src="./alignment.jpg" style="margin:0 auto;">
 它们飞行的方向也不能太乱，大体上都会往一个方向上飞，每个对象都会归到一队伍中
 
 这三个特性分离、内聚、排队组合起来，就会得到飞车逼真的鸟群（群体）
@@ -118,13 +121,20 @@ update(birds){
 }
  
 ```
-就是先忽略到自己，如果搜寻了那些过于接近的鸟，则把计算出的转向力累加到加速度上。注意的是，对于过于接近的判断其实还有个附加条件，就是在视场内。上面的代码并没有加上这个条件，不过也能模拟的较好，我就没写=w=，鸟的视场通常是180度的，是否在180度内，满足的是 ` this.ve.dot(this.po.sub(bird.po)) < 0 `
+就是先忽略到自己，如果搜寻了那些过于接近的鸟，则把计算出的转向力累加到加速度上。注意的是，对于过于接近的判断其实还有个附加条件，就是在视场内。上面的代码并没有加上这个条件，不过也能模拟的较好，我就没写=w=，鸟的视场通常是180度的，是否在180度内，满足的是 ` this.ve.dot(this.po.sub(bird.po)) < 0 `,
+对视野和其他数值进行调整，都会形成不一样的群落效果。
 
 我们还可以叠加多层的信息生成更复杂的模拟。这里的鸟都是一类鸟，可以添加一个老鹰对象，如果小鸟和老鹰的距离超过了一定阈值小鸟就会立马逃跑。要模拟这种情况，只要再添加一种逃离的行为到整个系统中，这种行为还会导致小鸟的总转向力，速度全部上升。
 
 ### 3d鸟群 
-3d的实现和2d其实原理类似，唯一要注意的地方就是对象需要往目标方向的转向问题，这通常会使用四元数来进行处理，代码关键就是：
-` this.rot.setFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(this.ve.x, this.ve.y, this.ve.z).normalize()))`
+3d的实现和2d其实原理类似，唯一要注意的地方就是对象需要往目标方向的转向问题，这通常会使用四元数来进行处理，代码关键就是
+```js
+ this.rot.setFromQuaternion(
+      new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(this.ve.x, this.ve.y, this.ve.z).normalize())
+    )
+    
+    this.rotation.copy(new THREE.Euler(this.rot.x,this.rot.y,this.rot.z))
+```
 
 [3d demo](https://dwqdaiwenqi.github.io/flocking-tutorial/site#/3d)
 
