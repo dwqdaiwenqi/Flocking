@@ -21,9 +21,11 @@
 
 
 #### 内聚（cohesion）
+<img src="./cohesion.jpg" style="margin:0 auto;">
 也不能和周围对象们离的太远了，太远会被拉回来
 
 #### 排队（alignment）
+<img src="./alignment.jpg" style="margin:0 auto;">
 它们飞行的方向也不能太乱，大体上都会往一个方向上飞，每个对象都会归到一队伍中
 
 这三个特性分离、内聚、排队组合起来，就会得到飞车逼真的鸟群（群体）
