@@ -76,11 +76,9 @@ var APP = class App extends Component{
   }
   followBird(e){
     // e.target
-    // debugger
     Flocking3d.tracking = e.target.checked
   }
   routerWillLeave(nextLocation){
-    // console.log(nextLocation)
     //debugger
     var mod,res
 
