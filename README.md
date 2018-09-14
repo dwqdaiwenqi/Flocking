@@ -2,7 +2,7 @@
 
 本文会使用前端技术来模拟2d和3d鸟群，我选用canvas元素绘制，当然也可以使用css3或者svg。
 
-整个实现 [这儿](https://dwqdaiwenqi.github.io/flocking-tutorial/site)
+整个实现 [demo](https://dwqdaiwenqi.github.io/flocking-tutorial/site)
 
 3d的渲染我选用threejs 
 
