@@ -127,7 +127,13 @@ update(birds){
 
 ### 3d鸟群 
 3d的实现和2d其实原理类似，唯一要注意的地方就是对象需要往目标方向的转向问题，这通常会使用四元数来进行处理，代码关键就是：
-` this.rot.setFromQuaternion(new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(this.ve.x, this.ve.y, this.ve.z).normalize()))`
+```js
+ this.rot.setFromQuaternion(
+      new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(this.ve.x, this.ve.y, this.ve.z).normalize())
+    )
+    
+    this.rotation.copy(new THREE.Euler(this.rot.x,this.rot.y,this.rot.z))
+```
 
 [3d demo](https://dwqdaiwenqi.github.io/flocking-tutorial/site#/3d)
 
