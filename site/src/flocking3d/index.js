@@ -71,10 +71,7 @@ export default {
 
     let random = Math.random;
 
-
-    var target = new THREE.Vector3(0,0,-300)
-
-
+    let target = new THREE.Vector3(0,0,-300)
 
     let boids = [...Array(88)].map(()=>{
       let boid = new Bird()
@@ -89,9 +86,9 @@ export default {
       return boid
     })
 
-    var p = 2,q = 5;
+    let p = 2,q = 5;
 
-    var that = this;
+    let that = this;
 
     requestAnimationFrame(function animate(){
 
@@ -101,17 +98,17 @@ export default {
 
       renderer.render(scene,that.camera)
 
-      var t = Date.now()*.0001;
-
-      var target = new THREE.Vector3(
-        (2 + Math.cos(q * t)) * Math.cos(p * t)
-        ,(2 + Math.cos(q * t)) * Math.sin(p * t)
-        ,Math.sin(q * t)
-      ).multiplyScalar(renderer.domElement.width*.1).add(new THREE.Vector3(0,0,-200))
+      let t = Date.now()*.0001;
 
       boids.forEach((boid)=>{
 
-        boid.target = target.clone()
+        boid.target = new THREE.Vector3(
+          (2 + Math.cos(q * t)) * Math.cos(p * t)
+          ,(2 + Math.cos(q * t)) * Math.sin(p * t)
+          ,Math.sin(q * t)
+        )
+        .multiplyScalar(renderer.domElement.width*.1)
+        .add(new THREE.Vector3(0,0,-200))
 
         boid.update(boids)
         

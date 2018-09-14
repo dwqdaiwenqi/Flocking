@@ -30,7 +30,7 @@ export default class Bird extends THREE.Group{
 
   }
   update(boids){
-    
+
     // separation
     // alignment
     // cohesion
@@ -122,9 +122,8 @@ export default class Bird extends THREE.Group{
     this.rot.setFromQuaternion(
       new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(this.ve.x, this.ve.y, this.ve.z).normalize())
     )
+    
+    this.rotation.copy(new THREE.Euler(this.rot.x,this.rot.y,this.rot.z))
 
-    this.rotation.x = this.rot.x
-    this.rotation.y = this.rot.y
-    this.rotation.z = this.rot.z
   }
 }
