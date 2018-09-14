@@ -36,8 +36,6 @@ export default class Bird extends cax.Group{
 
     birds = birds.filter(o=>this!=o)
 
-    // console.log(this.alpha,this.visible,this.polygon.x,this.polygon.y)
-    //console.log(this.po)
     // separation
     for(let bird of birds){
       if(this.po.distanceTo(bird.po) < Bird.sDist){
@@ -70,7 +68,7 @@ export default class Bird extends cax.Group{
       )
     }
 
-
+    
     // alignment
     let alignment =  birds.reduce((param, b)=>{
       if(this.po.distanceTo(b.po) < Bird.aDist){

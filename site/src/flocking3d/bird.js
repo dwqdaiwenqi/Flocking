@@ -12,7 +12,6 @@ export default class Bird extends THREE.Group{
 
     //18,80,60
 
-
     this.ac = new THREE.Vector3()
     this.ve = new THREE.Vector3()
     this.rot = new THREE.Euler()
@@ -31,7 +30,7 @@ export default class Bird extends THREE.Group{
 
   }
   update(boids){
-
+    
     // separation
     // alignment
     // cohesion
@@ -84,7 +83,7 @@ export default class Bird extends THREE.Group{
       
       for(let i = 0; i < boids.length; i++){
         let dist = this.position.distanceTo(boids[i].position)
-        
+        // this.mesh.position.angleTo(search[i].position) > Math.PI
         let d = this.sharkFlag?Bird.coDist*1:Bird.coDist*2
         if(dist > .0001 && dist < d && boids[i]!=this) {
         
