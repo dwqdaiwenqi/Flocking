@@ -1,7 +1,7 @@
 
 import React,{Component} from 'react'
 import {render} from 'react-dom'
-import{Router,Route,Link,withRouter,hashHistory,IndexRoute } from 'react-router'
+import {Router,Route,Link,withRouter,hashHistory,IndexRoute } from 'react-router'
 import cax from 'cax'
 import Flocking2d from './flocking2d/'
 import Flocking3d from './flocking3d/'
