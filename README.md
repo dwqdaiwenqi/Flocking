@@ -129,7 +129,7 @@ update(birds){
 我们还可以叠加多层的信息生成更复杂的模拟。这里的鸟都是一类鸟，可以添加一个老鹰对象，如果小鸟和老鹰的距离超过了一定阈值小鸟就会立马逃跑。要模拟这种情况，只要再添加一种逃离的行为到整个系统中，这种行为还会导致小鸟的总转向力，速度全部上升。
 
 ### 3d鸟群 
-[3d demo](https://dwqdaiwenqi.github.io/Flocking/site#/3d)
+[3d demo](https://dwqdaiwenqi.github.io/Flocking/site/#/3d)
 
 <img src="https://raw.githubusercontent.com/dwqdaiwenqi/Flocking/master/flocking3d.gif"/>
 
