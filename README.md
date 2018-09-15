@@ -9,7 +9,7 @@
 2d的渲染引擎我选择cax，cax是一款我非常喜欢的渲染引擎，支持小程序、小游戏以及 Web 浏览器渲染。用它既能开发小游戏也能开发图表（见[wechart](https://github.com/dntzhang/wechart)），强力推荐！
 
 ### 2d鸟群  
-[2d demo](https://dwqdaiwenqi.github.io/Flocking/site#/2d)
+[2d demo](https://dwqdaiwenqi.github.io/Flocking/site#/2d/)
 
 <img src="https://raw.githubusercontent.com/dwqdaiwenqi/Flocking/master/flocking2d.gif"/>
 
