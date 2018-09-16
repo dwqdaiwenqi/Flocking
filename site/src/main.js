@@ -66,7 +66,10 @@ var APP = class App extends Component{
           <div ref="stage-3d" className="stage-3d">
             <div>
               <p>
-                <input onClick={this.followBird.bind(this)} type="checkbox" value="tranking"/><span>follow</span>
+                <input id="ipt1" 
+                  onChange={this.iptChange.bind(this)} 
+                  onClick={this.followBird.bind(this)} type="checkbox" name="follow" value="tranking"
+                /><label for="ipt1" >follow</label>
               </p>
             </div>
           </div>
@@ -74,6 +77,9 @@ var APP = class App extends Component{
       </section>
     )
   }
+  iptChange(e){
+    debugger
+  } 
   followBird(e){
     // e.target
     Flocking3d.tracking = e.target.checked
