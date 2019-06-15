@@ -3,7 +3,7 @@
 本文会使用前端技术来模拟2d和3d鸟群，我选用canvas元素绘制，当然也可以使用css3或者svg。
 
 实现 [demo](https://dwqdaiwenqi.github.io/Flocking/site/)
-
+    
 3d的渲染我选用threejs 
 
 2d的渲染引擎我选择cax，cax是一款我非常喜欢的渲染引擎，支持小程序、小游戏以及 Web 浏览器渲染。用它既能开发小游戏也能开发图表（见[wechart](https://github.com/dntzhang/wechart)），强力推荐！
