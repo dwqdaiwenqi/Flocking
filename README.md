@@ -15,7 +15,7 @@
 
 这些鸟并不是在漫无目的的乱飞，它们看上去都拥有了智商，形成了群体，产生了复杂的群组运动效果
 
-这看上去复杂的行为是一种复合行为，通常会拆分为下面几种
+这看上去复杂的行为是一种复合行为，通常会拆分为下面几种：
 
 #### 分离（separation）
 <img src="https://raw.githubusercontent.com/dwqdaiwenqi/Flocking/master/separation.jpg" style="margin:0 auto;">
